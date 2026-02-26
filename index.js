@@ -1,22 +1,25 @@
 const express = require("express");
 const cors = require("cors");
-const dotenv = require("dotenv");
-const db = require("./config/db");
+const bodyParser = require("body-parser");
+const { connectDB, sequelize } = require("./config/db");
 
-dotenv.config();
+require("dotenv").config();
 
 const app = express();
 app.use(cors());
-app.use(express.json());
+app.use(bodyParser.json());
 
-// Test DB connection
-db.connect()
-  .then(() => console.log("Database connected"))
-  .catch((err) => console.error("DB connection error:", err));
+const PORT = process.env.PORT || 3000;
 
-// Health check
-app.get("/", (req, res) => res.send("Smart Home Backend Running"));
+// Test route
+app.get("/", (req, res) => {
+  res.send("Smart Home API is running");
+});
 
-// Listen on Railway port
-const port = process.env.PORT || 3000;
-app.listen(port, () => console.log(`Server running on port ${port}`));
+// Sync database and start server
+sequelize.sync().then(() => {
+  app.listen(PORT, async () => {
+    await connectDB();
+    console.log(`Server running on port ${PORT}`);
+  });
+});
