@@ -1,0 +1,13 @@
+// Install Railway CLI
+> npm install -g railway
+
+npm init -y
+
+npm install express pg dotenv cors jsonwebtoken
+
+
+
+// generate the JWT_SECRET by your own random
+node -e "console.log(require('crypto').randomBytes(32).toString('hex'))"
+
+ad276b4e061a49deac6a553d58775cdc73ff18acfd18a2ff49e167d2ba86932d
